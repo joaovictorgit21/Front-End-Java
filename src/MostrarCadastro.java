@@ -26,6 +26,8 @@ public class MostrarCadastro extends JFrame {
     private final JLabel espacador2Label = new JLabel("");
     private final JLabel espacador4Label = new JLabel("");
     private final JLabel espacador6Label = new JLabel("");
+    private final String dbPadrao = "db_teste";
+    private final String tblPadrao = "tbl_teste";
 
 
     
@@ -42,7 +44,7 @@ public class MostrarCadastro extends JFrame {
                 {
                     String[] resultado;
                     try {
-                        resultado = NavegadorDeRegistro.FirstRegister("db_teste", "tbl_teste");
+                        resultado = NavegadorDeRegistro.FirstRegister(dbPadrao, tblPadrao);
                         idJTextField.setText(resultado[0]);
                         nameJTextField.setText(resultado[1]);
                         emailJTextField.setText(resultado[2]);
@@ -69,7 +71,7 @@ public class MostrarCadastro extends JFrame {
                 {
                     String[] resultado;
                     try {
-                        resultado = NavegadorDeRegistro.NextRegister("db_teste", "tbl_teste", idJTextField.getText());
+                        resultado = NavegadorDeRegistro.NextRegister(dbPadrao, tblPadrao, idJTextField.getText());
                         idJTextField.setText(resultado[0]);
                         nameJTextField.setText(resultado[1]);
                         emailJTextField.setText(resultado[2]);
@@ -96,7 +98,7 @@ public class MostrarCadastro extends JFrame {
                 {
                     String[] resultado;
                     try {
-                        resultado = NavegadorDeRegistro.PreviousRegister("db_teste", "tbl_teste", idJTextField.getText());
+                        resultado = NavegadorDeRegistro.PreviousRegister(dbPadrao, tblPadrao, idJTextField.getText());
                         idJTextField.setText(resultado[0]);
                         nameJTextField.setText(resultado[1]);
                         emailJTextField.setText(resultado[2]);
@@ -123,7 +125,7 @@ public class MostrarCadastro extends JFrame {
                 {
                     String[] resultado;
                     try {
-                        resultado = NavegadorDeRegistro.LastRegister("db_teste", "tbl_teste");
+                        resultado = NavegadorDeRegistro.LastRegister(dbPadrao, tblPadrao);
                         idJTextField.setText(resultado[0]);
                         nameJTextField.setText(resultado[1]);
                         emailJTextField.setText(resultado[2]);
@@ -158,7 +160,7 @@ public class MostrarCadastro extends JFrame {
                         email = emailJTextField.getText();
                         password = passwordJPasswordField.getText();
                         id = idJTextField.getText();
-                        NavegadorDeRegistro.UpdateRegister("db_teste", "tbl_teste", name, email, password, id);
+                        NavegadorDeRegistro.UpdateRegister(dbPadrao, tblPadrao, name, email, password, id);
 
                         notificacaoJLabel.setText("Atualização realizada com sucesso");
                     } catch(Exception e) {
@@ -177,7 +179,7 @@ public class MostrarCadastro extends JFrame {
                     String id;
                     try {
                         id = idJTextField.getText();
-                        NavegadorDeRegistro.DeleteRegister("db_teste", "tbl_teste", "id", id);
+                        NavegadorDeRegistro.DeleteRegister(dbPadrao, tblPadrao, "id", id);
                         notificacaoJLabel.setText("Exclusão realizada com sucesso");
                     } catch(Exception e) {
                         notificacaoJLabel.setText("Digite alguma coisa:");
@@ -211,7 +213,7 @@ public class MostrarCadastro extends JFrame {
                         name = nameJTextField.getText();
                         email = emailJTextField.getText();
                         password = passwordJPasswordField.getText();
-                        NavegadorDeRegistro.newResgister("db_teste", "tbl_teste", "name", "email", "password", name, email, password);
+                        NavegadorDeRegistro.newResgister(dbPadrao, tblPadrao, "name", "email", "password", name, email, password);
                         notificacaoJLabel.setText("Registro adicionado com sucesso");
                     } catch (Exception e) {
                         notificacaoJLabel.setText("Digite alguma coisa:");
@@ -221,20 +223,54 @@ public class MostrarCadastro extends JFrame {
             }
             );
 
-            clearFields.addActionListener(
-                new ActionListener() {
+        clearFields.addActionListener(
+            new ActionListener() {
 
-                    public void actionPerformed(ActionEvent event)
-                    {
-                        idJTextField.setText("");
-                        nameJTextField.setText("");
-                        emailJTextField.setText("");
-                        passwordJPasswordField.setText("");
+                public void actionPerformed(ActionEvent event)
+                {
+                    idJTextField.setText("");
+                    nameJTextField.setText("");
+                    emailJTextField.setText("");
+                    passwordJPasswordField.setText("");
+                    
+                    notificacaoJLabel.setText("Exclusão de campos com sucesso");
+                }
+            }
+        );
 
-                        notificacaoJLabel.setText("Exclusão de campos com sucesso");
+        searchJButton.addActionListener(
+            new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) 
+                {
+                    String name;
+                    String email;
+                    
+                    String[] resultado;
+                    try {
+                        
+                        firstJButton.setEnabled(true);
+                        nextJButton.setEnabled(true);
+                        previousJButton.setEnabled(true);
+                        lastJButton.setEnabled(true);
+
+                        name = nameJTextField.getText();
+                        email = emailJTextField.getText();
+                        
+                        resultado = NavegadorDeRegistro.searchRegister(dbPadrao, tblPadrao, "name", "email", name, email);
+
+                        // idJTextField.setText(resultado[0]);
+                        nameJTextField.setText(resultado[0]);
+                        emailJTextField.setText(resultado[1]);
+                        // passwordJPasswordField.setText(resultado[3]);
+
+                    } catch (Exception e) {
+                        notificacaoJLabel.setText("Digite alguma coisa:");
+                        return;
                     }
                 }
-            );
+            }
+        );
 
         add(idJLabel);
         add(idJTextField);

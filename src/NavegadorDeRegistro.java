@@ -157,4 +157,37 @@ public class NavegadorDeRegistro {
             return false;
         }
     }
+
+    public static String[] searchRegister(String db, String tbl, String campo1, String campo2, String name, String email) throws Exception {
+
+        String retorno = "Oiiii!!!";
+        String[] resultado = new String[4];
+        try {
+            Connection conexao = MySQLConnector.connection();
+            String strSqlsearchRegister = "SELECT id, name, email, password FROM `" + db + "`.`" + tbl + "` WHERE `" + campo1 + "` = '" + name + "' OR `" + campo2 + "` = '" + email + "';";
+            Statement stmSqlsearchRegister = conexao.createStatement();
+            ResultSet resultSet = stmSqlsearchRegister.executeQuery(strSqlsearchRegister);
+    
+            if (resultSet.next()) {
+                // resultado[0] = resultSet.getString("id");
+                resultado[0] = resultSet.getString("name");
+                resultado[1] = resultSet.getString("email");
+                // resultado[3] = resultSet.getString("password");
+            }
+    
+            stmSqlsearchRegister.close();
+            retorno = "teste";
+            System.out.println("Certo " + retorno);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error " + e);
+            retorno = "teste";
+            resultado[0] = "Erro";
+            resultado[1] = "Erro";
+            resultado[2] = "Erro";
+            resultado[3] = "Erro";
+        }
+        return resultado;
+    }
+    
 }
